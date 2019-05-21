@@ -7,7 +7,7 @@ export default class App extends Component {
 	state = {
 		total: {
 			rating: null,
-			reviews: 5823
+			count: null
 		},
 		reviews: [],
 		loading: false
@@ -19,8 +19,10 @@ export default class App extends Component {
 		request(
 			`https://api.feefo.com/api/10/reviews/summary/all?merchant_identifier=${merchant_identifier}`
 		).then(data => {
-			const { rating } = JSON.parse(data.response).rating;
-			this.setState({ total: { ...this.state.total, rating } });
+			const response = JSON.parse(data.response);
+			const { rating } = response.rating;
+      const { count } = response.meta;
+			this.setState({ total: { ...this.state.total, rating, count } });
 		});
 		this.getReviews(reviews.length);
 	};
@@ -34,7 +36,7 @@ export default class App extends Component {
 		this.setState({ loading: true });
 
 		request(
-			`https://api.feefo.com/api/10/reviews/all?merchant_identifier=${merchant_identifier}&page_size=${count}&page=${page}`
+			`https://api.feefo.com/api/10/reviews/service?merchant_identifier=${merchant_identifier}&page_size=${count}&page=${page}&rating=4,5`
 		).then(data => {
 			const { reviews } = JSON.parse(data.response);
 			this.setState({
@@ -70,7 +72,7 @@ export default class App extends Component {
 							/>
 						</div>
 						<div class={styles[`${baseClass}-header__text`]}>
-							Independent Service Rating based on {total.reviews}{" "}
+							Independent Service Rating based on {total.count}{" "}
 							verified reviews. Read all reviews
 						</div>
 					</div>
