@@ -136,8 +136,6 @@ class Widget extends Component {
 	}
 }
 
-export default class App extends Component {
-	render({ perPage = 4, ...rest }) {
-		return <Widget perPage={perPage} {...rest} />;
-	}
-}
+export default ({ perPage = 4, ...rest }) => (
+	<Widget perPage={perPage} {...rest} />
+);
