@@ -3,7 +3,7 @@ import Stars, { Defs } from "./components/Stars";
 import request from "./request";
 import styles from "./style.scss";
 import logo from "./assets/logo.svg";
-export default class App extends Component {
+class Widget extends Component {
 	state = {
 		total: {
 			rating: null,
@@ -15,28 +15,27 @@ export default class App extends Component {
 
 	componentDidMount = () => {
 		const { reviews } = this.state;
-		const { merchant_identifier } = this.props;
+		const { merchantIdentifier } = this.props;
 		request(
-			`https://api.feefo.com/api/10/reviews/summary/all?merchant_identifier=${merchant_identifier}`
+			`https://api.feefo.com/api/10/reviews/summary/all?merchant_identifier=${merchantIdentifier}`
 		).then(data => {
 			const response = JSON.parse(data.response);
 			const { rating } = response.rating;
-      const { count } = response.meta;
+			const { count } = response.meta;
 			this.setState({ total: { ...this.state.total, rating, count } });
 		});
 		this.getReviews(reviews.length);
 	};
 
 	getReviews = page => {
-		const { merchant_identifier } = this.props;
-		const count = 4;
+		const { merchantIdentifier, perPage } = this.props;
 
 		page = page + 1;
 
 		this.setState({ loading: true });
 
 		request(
-			`https://api.feefo.com/api/10/reviews/service?merchant_identifier=${merchant_identifier}&page_size=${count}&page=${page}&rating=4,5`
+			`https://api.feefo.com/api/10/reviews/service?merchant_identifier=${merchantIdentifier}&page_size=${perPage}&page=${page}&rating=4,5`
 		).then(data => {
 			const { reviews } = JSON.parse(data.response);
 			this.setState({
@@ -47,7 +46,7 @@ export default class App extends Component {
 	};
 
 	render(props) {
-		const { buttonClass, merchant_identifier } = this.props;
+		const { buttonClass, merchantIdentifier } = this.props;
 		const { total, reviews, loading } = this.state;
 		const baseClass = "feefo-widget";
 
@@ -72,8 +71,14 @@ export default class App extends Component {
 							/>
 						</div>
 						<div class={styles[`${baseClass}-header__text`]}>
-							<b>Independent Service Rating</b> based on <b>{total.count}</b>{" "}
-							verified reviews over the past year. <a href={`https://www.feefo.com/en-GB/reviews/${merchant_identifier}`}>Read all reviews</a> 
+							<b>Independent Service Rating</b> based on{" "}
+							<b>{total.count}</b> verified reviews over the past
+							year.{" "}
+							<a
+								href={`https://www.feefo.com/en-GB/reviews/${merchantIdentifier}`}
+							>
+								Read all reviews
+							</a>
 						</div>
 					</div>
 				)}
@@ -128,5 +133,11 @@ export default class App extends Component {
 				</div>
 			</div>
 		);
+	}
+}
+
+export default class App extends Component {
+	render({ perPage = 4, ...rest }) {
+		return <Widget perPage={perPage} {...rest} />;
 	}
 }

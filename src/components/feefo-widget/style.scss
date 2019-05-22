@@ -35,9 +35,9 @@
 	}
 	&-reviews {
 		display: grid;
-        grid-gap: 24px;
-        padding: 24px;
-		grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));	}
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		grid-auto-flow:column;  
+	}
 	&-review {
 		&__stars {
 			max-width: 100px;
@@ -52,11 +52,11 @@
 			margin: 6px 0;
 			padding: 0;
 		}
-    }
-    &-button-container{
+	}
+	&-button-container {
 		text-align: center;
 		padding: 48px 0;
-    }
+	}
 }
 
 body {
