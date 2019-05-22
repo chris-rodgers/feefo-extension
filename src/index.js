@@ -8,6 +8,6 @@ import Widget from "./components/feefo-widget";
 let _habitat = habitat(Widget);
 
 _habitat.render({
-  selector: '[data-widget-host="habitat"]',
+  selector: '[data-widget-host="feefo-widget"]',
   clean: true
 });
