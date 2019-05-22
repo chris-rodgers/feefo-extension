@@ -47,7 +47,7 @@ export default class App extends Component {
 	};
 
 	render(props) {
-		const { buttonClass } = this.props;
+		const { buttonClass, merchant_identifier } = this.props;
 		const { total, reviews, loading } = this.state;
 		const baseClass = "feefo-widget";
 
@@ -72,8 +72,8 @@ export default class App extends Component {
 							/>
 						</div>
 						<div class={styles[`${baseClass}-header__text`]}>
-							Independent Service Rating based on {total.count}{" "}
-							verified reviews. Read all reviews
+							<b>Independent Service Rating</b> based on <b>{total.count}</b>{" "}
+							verified reviews over the past year. <a href={`https://www.feefo.com/en-GB/reviews/${merchant_identifier}`}>Read all reviews</a> 
 						</div>
 					</div>
 				)}
