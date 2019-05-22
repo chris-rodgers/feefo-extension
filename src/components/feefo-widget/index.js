@@ -9,6 +9,7 @@ class Widget extends Component {
 			rating: null,
 			count: null
 		},
+		current: 0,
 		reviews: [],
 		loading: false
 	};
@@ -27,7 +28,7 @@ class Widget extends Component {
 		this.getReviews(reviews.length);
 	};
 
-	getReviews = page => {
+	getReviews = (page, cb) => {
 		const { merchantIdentifier, perPage } = this.props;
 
 		page = page + 1;
@@ -42,12 +43,29 @@ class Widget extends Component {
 				reviews: [...this.state.reviews, ...reviews],
 				loading: false
 			});
+			cb && cb();
 		});
 	};
 
+	handlePrev = () => {
+		this.setState({ current: this.state.current - 1 });
+	};
+
+	handleNext = () => {
+		const { reviews, current } = this.state;
+		const { perPage } = this.props;
+		var nextItem = () => this.setState({ current: this.state.current + 1 });
+		if (current == reviews.length - perPage) {
+			this.setState({ loading: true });
+			this.getReviews(reviews.length, nextItem);
+		} else {
+			nextItem();
+		}
+	};
+
 	render(props) {
-		const { buttonClass, merchantIdentifier } = this.props;
-		const { total, reviews, loading } = this.state;
+		const { buttonClass, merchantIdentifier, perPage } = this.props;
+		const { total, reviews, loading, current } = this.state;
 		const baseClass = "feefo-widget";
 
 		return (
@@ -85,50 +103,62 @@ class Widget extends Component {
 				<Defs />
 				{reviews.length ? (
 					<div class={styles[`${baseClass}-reviews`]}>
-						{reviews.map(item => {
-							const { rating } = item.service.rating;
-							const { title, review } = item.service;
+						<div
+							style={{
+								width: `${(reviews.length / perPage) * 100}%`,
+								transform: `translateX(-${(100 /
+									reviews.length) *
+									current}%)`
+							}}
+							class={styles[`${baseClass}-reviews__inner`]}
+						>
+							{reviews.map(item => {
+								const { rating } = item.service.rating;
+								const { title, review } = item.service;
 
-							return (
-								<div class={styles[`${baseClass}-review`]}>
-									<Stars
-										class={
-											styles[`${baseClass}-review__stars`]
-										}
-										rating={rating}
-									/>
-									{title && (
-										<h3
+								return (
+									<div class={styles[`${baseClass}-review`]}>
+										<Stars
 											class={
 												styles[
-													`${baseClass}-review__title`
+													`${baseClass}-review__stars`
+												]
+											}
+											rating={rating}
+										/>
+										{title && (
+											<h3
+												class={
+													styles[
+														`${baseClass}-review__title`
+													]
+												}
+											>
+												{title}
+											</h3>
+										)}
+										<p
+											class={
+												styles[
+													`${baseClass}-review__review`
 												]
 											}
 										>
-											{title}
-										</h3>
-									)}
-									<p
-										class={
-											styles[
-												`${baseClass}-review__review`
-											]
-										}
-									>
-										{review}
-									</p>
-								</div>
-							);
-						})}
+											{review}
+										</p>
+									</div>
+								);
+							})}
+						</div>
 					</div>
 				) : null}
 				<div class={styles[`${baseClass}-button-container`]}>
-					<button
-						class={buttonClass}
-						onClick={() => this.getReviews(reviews.length)}
-						disabled={loading}
-					>
-						{loading ? "Loading" : "Load More"}
+					<button disabled={current == 0} onClick={this.handlePrev}>
+						Prev
+					</button>
+
+					<button disabled={loading} onClick={this.handleNext}>
+						Next
 					</button>
 				</div>
 			</div>
