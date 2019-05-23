@@ -113,8 +113,18 @@ class Widget extends Component {
 							class={styles[`${baseClass}-reviews__inner`]}
 						>
 							{reviews.map(item => {
+								const { customer } = item;
 								const { rating } = item.service.rating;
-								const { title, review } = item.service;
+								let { title, review } = item.service;
+								const reviewLength = 100;
+								let url = null;
+								if (review.length > reviewLength) {
+									review = `${review.substring(
+										0,
+										reviewLength
+									)}...`;
+									url = item.url;
+								}
 
 								return (
 									<div class={styles[`${baseClass}-review`]}>
@@ -144,8 +154,32 @@ class Widget extends Component {
 												]
 											}
 										>
-											{review}
+											{review}{" "}
+											{url && (
+												<a
+													class={
+														styles[
+															`${baseClass}-review__read-more`
+														]
+													}
+													href={url}
+													target="_blank"
+												>
+													Read More
+												</a>
+											)}
 										</p>
+										{customer && customer.display_name && (
+											<p
+												class={
+													styles[
+														`${baseClass}-review__display-name`
+													]
+												}
+											>
+												{customer.display_name}
+											</p>
+										)}
 									</div>
 								);
 							})}
