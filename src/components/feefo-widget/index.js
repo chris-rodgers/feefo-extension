@@ -1,8 +1,12 @@
 import { h, Component } from "preact";
 import Stars, { Defs } from "./components/Stars";
+import Button from "./components/Button";
 import request from "./request";
 import styles from "./style.scss";
 import logo from "./assets/logo.svg";
+import arrowLeft from "./assets/arrow-left.svg";
+import arrowRight from "./assets/arrow-right.svg";
+
 class Widget extends Component {
 	state = {
 		total: {
@@ -102,104 +106,163 @@ class Widget extends Component {
 				)}
 				<Defs />
 				{reviews.length ? (
-					<div class={styles[`${baseClass}-reviews`]}>
-						<div
-							style={{
-								width: `${(reviews.length / perPage) * 100}%`,
-								transform: `translateX(-${(100 /
-									reviews.length) *
-									current}%)`
-							}}
-							class={styles[`${baseClass}-reviews__inner`]}
+					<div class={styles[`${baseClass}-carousel`]}>
+						<Button
+							class={styles[`${baseClass}-button`]}
+							disabled={current == 0}
+							onClick={this.handlePrev}
+							icon={arrowLeft}
 						>
-							{reviews.map(item => {
-								const { customer } = item;
-								const { rating } = item.service.rating;
-								let { title, review } = item.service;
-								const reviewLength = 100;
-								let url = null;
-								if (review.length > reviewLength) {
-									review = `${review.substring(
-										0,
-										reviewLength
-									)}...`;
-									url = item.url;
-								}
+							Prev
+						</Button>
+						<div class={styles[`${baseClass}-reviews`]}>
+							<div
+								style={{
+									transform: `translateX(-${(100 / perPage) *
+										current}%)`
+								}}
+								class={styles[`${baseClass}-reviews__inner`]}
+							>
+								{reviews.map(item => {
+									const { customer } = item;
+									const { rating } = item.service.rating;
+									let { title, review } = item.service;
+									const reviewLength = 100;
+									let url = null;
+									if (review.length > reviewLength) {
+										review = `${review.substring(
+											0,
+											reviewLength
+										)}...`;
+										url = item.url;
+									}
 
-								return (
-									<div class={styles[`${baseClass}-review`]}>
-										<Stars
+									return (
+										<div
 											class={
-												styles[
-													`${baseClass}-review__stars`
-												]
+												styles[`${baseClass}-review`]
 											}
-											rating={rating}
-										/>
-										{title && (
-											<h3
+											style={{
+												minWidth: `${100 / perPage}%`
+											}}
+										>
+											<Stars
 												class={
 													styles[
-														`${baseClass}-review__title`
+														`${baseClass}-review__stars`
 													]
 												}
-											>
-												{title}
-											</h3>
-										)}
-										<p
-											class={
-												styles[
-													`${baseClass}-review__review`
-												]
-											}
-										>
-											{review}{" "}
-											{url && (
-												<a
+												rating={rating}
+											/>
+											{title && (
+												<h3
 													class={
 														styles[
-															`${baseClass}-review__read-more`
+															`${baseClass}-review__title`
 														]
 													}
-													href={url}
-													target="_blank"
 												>
-													Read More
-												</a>
+													{title}
+												</h3>
 											)}
-										</p>
-										{customer && customer.display_name && (
 											<p
 												class={
 													styles[
-														`${baseClass}-review__display-name`
+														`${baseClass}-review__review`
 													]
 												}
 											>
-												{customer.display_name}
+												{review}{" "}
+												{url && (
+													<a
+														class={
+															styles[
+																`${baseClass}-review__read-more`
+															]
+														}
+														href={url}
+														target="_blank"
+													>
+														Read More
+													</a>
+												)}
 											</p>
-										)}
-									</div>
-								);
-							})}
+											{customer &&
+												customer.display_name && (
+													<p
+														class={
+															styles[
+																`${baseClass}-review__display-name`
+															]
+														}
+													>
+														{customer.display_name}
+													</p>
+												)}
+										</div>
+									);
+								})}
+							</div>
 						</div>
+						<Button
+							class={styles[`${baseClass}-button`]}
+							disabled={loading}
+							onClick={this.handleNext}
+							icon={arrowRight}
+						>
+							Next
+						</Button>
 					</div>
 				) : null}
-				<div class={styles[`${baseClass}-button-container`]}>
-					<button disabled={current == 0} onClick={this.handlePrev}>
-						Prev
-					</button>
-
-					<button disabled={loading} onClick={this.handleNext}>
-						Next
-					</button>
-				</div>
 			</div>
 		);
 	}
 }
 
-export default ({ perPage = 4, ...rest }) => (
-	<Widget perPage={perPage} {...rest} />
-);
+export default class App extends Component {
+	state = {
+		perPage: 4
+	};
+
+	constructor(props) {
+		super();
+		this.timeout;
+	}
+
+	getPerPage = () => {
+		const width =
+			window.innerWidth ||
+			document.documentElement.clientWidth ||
+			document.body.clientWidth;
+
+		let perPage = 4;
+
+		if (width < 768) {
+			perPage = 2;
+		}
+		if (width < 425) {
+			perPage = 1;
+		}
+
+		if (perPage != this.state.perPage) {
+			this.setState({ perPage: perPage });
+		}
+	};
+
+	componentDidMount = () => {
+		window.addEventListener("resize", () => {
+			clearTimeout(this.timeout);
+			this.timeout = setTimeout(this.getPerPage, 250);
+		});
+
+		this.getPerPage();
+
+	};
+
+	render() {
+		const { perPage } = this.state;
+		const { ...props } = this.props;
+
+		return <Widget perPage={perPage} {...props} />;
+	}
+}
