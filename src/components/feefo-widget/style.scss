@@ -13,8 +13,11 @@
 			display: flex;
 		}
 		&__stars {
-			flex-basis: 150px;
 			margin: 0 6px;
+			svg{
+				width: 150px;
+				height: 28px;
+			}
 		}
 		&__rating {
 			font-size: 24px;
@@ -36,12 +39,13 @@
 	}
 	&-carousel {
 		display: flex;
+		margin-bottom: 48px;
 	}
 	&-reviews {
 		overflow: hidden;
 		&__inner {
 			display: flex;
-			transition: transform 1s ease;
+			transition: transform 0.25s ease;
 		}
 	}
 	&-review {
