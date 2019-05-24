@@ -1,8 +1,8 @@
-const Button = ({icon, ...props, children}) => {
+const Button = ({Icon, ...props}) => {
 
     return (
         <button {...props}>
-           <img src={icon} />
+            <Icon/>        
         </button>
     );  
 }

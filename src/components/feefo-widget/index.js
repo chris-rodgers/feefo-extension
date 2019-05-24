@@ -3,9 +3,9 @@ import Stars, { Defs } from "./components/Stars";
 import Button from "./components/Button";
 import request from "./request";
 import styles from "./style.scss";
-import logo from "./assets/logo.svg";
-import arrowLeft from "./assets/arrow-left.svg";
-import arrowRight from "./assets/arrow-right.svg";
+import Logo from "./assets/logo.svg";
+import ArrowLeft from "./assets/arrow-left.svg";
+import ArrowRight from "./assets/arrow-right.svg";
 
 class Widget extends Component {
 	state = {
@@ -87,10 +87,8 @@ class Widget extends Component {
 							<div class={styles[`${baseClass}-header__rating`]}>
 								<b>{total.rating}</b>/5
 							</div>
-							<img
-								class={styles[`${baseClass}-header__logo`]}
-								src={logo}
-							/>
+
+							<Logo class={styles[`${baseClass}-header__logo`]} />
 						</div>
 						<div class={styles[`${baseClass}-header__text`]}>
 							<b>Independent Service Rating</b> based on{" "}
@@ -111,10 +109,9 @@ class Widget extends Component {
 							class={styles[`${baseClass}-button`]}
 							disabled={current == 0}
 							onClick={this.handlePrev}
-							icon={arrowLeft}
-						>
-							Prev
-						</Button>
+							Icon={ArrowLeft}
+							title="Prev"
+						/>
 						<div class={styles[`${baseClass}-reviews`]}>
 							<div
 								style={{
@@ -208,10 +205,9 @@ class Widget extends Component {
 							class={styles[`${baseClass}-button`]}
 							disabled={loading}
 							onClick={this.handleNext}
-							icon={arrowRight}
-						>
-							Next
-						</Button>
+							Icon={ArrowRight}
+							title="Next"
+						/>
 					</div>
 				) : null}
 			</div>
@@ -256,7 +252,6 @@ export default class App extends Component {
 		});
 
 		this.getPerPage();
-
 	};
 
 	render() {

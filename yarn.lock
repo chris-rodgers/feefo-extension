@@ -3155,7 +3155,7 @@ eslint-visitor-keys@^1.0.0:
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#3f3180fb2e291017716acb4c9d6d5b5c34a6a81d"
   integrity sha512-qzm/XxIbxm/FHyH341ZrbnMUpe+5Bocte9xkmFMzPMjRaZMcXww+MpBptFvtU+79L362nqiLhekCxCxDPaUMBQ==
 
-eslint@^4.5.0:
+eslint@^4.2.0, eslint@^4.5.0:
   version "4.19.1"
   resolved "https://registry.yarnpkg.com/eslint/-/eslint-4.19.1.tgz#32d1d653e1d90408854bfb296f076ec7e186a300"
   integrity sha512-bT3/1x1EbZB7phzYu7vCr1v3ONuzDtX8WjuM9c0iYxe+cq+pwcKEoQjl7zd3RpC6YOLgnSy3cTN58M2jcoPDIQ==
@@ -4374,6 +4374,11 @@ htmlparser2@^3.3.0:
     entities "^1.1.1"
     inherits "^2.0.1"
     readable-stream "^3.1.1"
+
+htmlparser@^1.7.7:
+  version "1.7.7"
+  resolved "https://registry.yarnpkg.com/htmlparser/-/htmlparser-1.7.7.tgz#19e7b3997ff6fbac99ae5a7d2766489efe7e2d0e"
+  integrity sha1-GeezmX/2+6yZrlp9J2ZInv5+LQ4=
 
 http-cache-semantics@3.8.1:
   version "3.8.1"
@@ -7317,6 +7322,14 @@ postcss@^7.0.1:
     source-map "^0.6.1"
     supports-color "^6.1.0"
 
+preact-cli-svg-loader@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/preact-cli-svg-loader/-/preact-cli-svg-loader-1.0.0.tgz#59d76f95ebfe71e1d50230801362b88d61bb45a5"
+  integrity sha512-AhR5xdFaYqMmJCI0QoRKfoeDHQQFsnxzlZtOABJhyBUUSIMogEPNFVbW3mukOH+t7N0jvgT5pBWzYgQzDOl3SQ==
+  dependencies:
+    eslint "^4.2.0"
+    preact-svg-loader "^0.2.0"
+
 preact-cli@^2.0.2:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/preact-cli/-/preact-cli-2.2.1.tgz#05a3311e89bdb120a5273532c77b87bdd710e04b"
@@ -7419,6 +7432,14 @@ preact-router@^2.5.2:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/preact-router/-/preact-router-2.6.1.tgz#eec60a9f2c07a1ae4fbc6604d8a0415742fbbd89"
   integrity sha512-Ql3fptQ8hiioIw5zUcWUq5NShl7yFR4e6KBUzLbGI7+HKMIgBnH+aOITN5IrY1rbr2vhKXBdHdd9nLbbjcJTOQ==
+
+preact-svg-loader@^0.2.0:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/preact-svg-loader/-/preact-svg-loader-0.2.1.tgz#3b50479a79b471ab71a7d4bf9e27c4e5b4d17102"
+  integrity sha512-P1b9wUnRMV/0TG2Z2plU5FqPnmz6LdwL8ZAEFcAfAR2pmBH17S4Q6Pyse6E/Cx31UK2wVe40CKmHV1gHv0hZ/w==
+  dependencies:
+    htmlparser "^1.7.7"
+    loader-utils "^1.1.0"
 
 preact-transition-group@^1.1.1:
   version "1.1.1"
