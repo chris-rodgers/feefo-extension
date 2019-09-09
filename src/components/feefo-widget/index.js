@@ -20,9 +20,9 @@ class Widget extends Component {
 
 	componentDidMount = () => {
 		const { reviews } = this.state;
-		const { merchantIdentifier } = this.props;
+		const { merchantIdentifier, origin } = this.props;
 		request(
-			`https://api.feefo.com/api/10/reviews/summary/all?merchant_identifier=${merchantIdentifier}`
+			`https://api.feefo.com/api/10/reviews/summary/all?merchant_identifier=${merchantIdentifier}&origin=${origin}`
 		).then(data => {
 			const response = JSON.parse(data.response);
 			const { rating } = response.rating;
@@ -40,7 +40,7 @@ class Widget extends Component {
 		this.setState({ loading: true });
 
 		request(
-			`https://api.feefo.com/api/10/reviews/service?merchant_identifier=${merchantIdentifier}&page_size=${perPage}&page=${page}&rating=4,5`
+			`https://api.feefo.com/api/10/reviews/service?merchant_identifier=${merchantIdentifier}&origin=${origin}&page_size=${perPage}&page=${page}&rating=4,5`
 		).then(data => {
 			const { reviews } = JSON.parse(data.response);
 			this.setState({
